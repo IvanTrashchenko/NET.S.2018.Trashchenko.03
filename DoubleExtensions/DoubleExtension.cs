@@ -31,7 +31,7 @@ namespace DoubleExtensions
 
             if (number < 0 && degree % 2 == 0)
             {
-                throw new ArgumentException("Root's degree must be even for calculation with negative numbers.");
+                throw new ArgumentException("Root's degree cannot be even for calculation with negative numbers.");
             }
 
             if (degree == 1)
