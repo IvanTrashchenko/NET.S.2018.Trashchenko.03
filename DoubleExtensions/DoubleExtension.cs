@@ -39,11 +39,6 @@ namespace DoubleExtensions
                 return number;
             }
 
-            if (degree == 0)
-            {
-                return 1.0;
-            }
-
             double x0 = 1;
             double x1 = (((degree - 1) * x0) + (number / Math.Pow(x0, degree - 1))) / degree;
             while (Math.Abs(x1 - x0) > precision)
