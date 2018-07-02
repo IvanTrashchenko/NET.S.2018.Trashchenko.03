@@ -7,7 +7,6 @@ namespace DoubleExtensions
     /// </summary>
     public static class DoubleExtension
     {
-        #region Finding root method
         /// <summary>
         /// Method which finds root of specific degree of number.
         /// </summary>
@@ -21,12 +20,12 @@ namespace DoubleExtensions
         {
             if (degree < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(degree));
+                throw new ArgumentOutOfRangeException($"{degree} is out of range.");
             }
 
             if (precision <= 0 || precision >= 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(precision));
+                throw new ArgumentOutOfRangeException($"{precision} is out of range.");
             }
 
             if (number < 0 && degree % 2 == 0)
@@ -39,35 +38,15 @@ namespace DoubleExtensions
                 return number;
             }
 
-            double x0 = 1;
-            double x1 = (((degree - 1) * x0) + (number / Math.Pow(x0, degree - 1))) / degree;
-            while (Math.Abs(x1 - x0) > precision)
+            double current = 1;
+            double next = (((degree - 1) * current) + (number / Math.Pow(current, degree - 1))) / degree;
+            while (Math.Abs(next - current) > precision)
             {
-                x0 = x1;
-                x1 = (((degree - 1) * x0) + (number / Math.Pow(x0, degree - 1))) / degree;
+                current = next;
+                next = (((degree - 1) * current) + (number / Math.Pow(current, degree - 1))) / degree;
             }
 
-            return Math.Round(x1, precision.ExtractDecimalLength());
-        }
-        #endregion
-
-        #region Private methods
-        /// <summary>
-        /// Method which finds length of decimal part of specific precision value.
-        /// </summary>
-        /// <param name="precision">Source precision value.</param>
-        /// <returns>Amount of symbols after dot.</returns>
-        private static int ExtractDecimalLength(this double precision)
-        {
-            int result = 0;
-            while (precision < 1)
-            {
-                precision *= 10;
-                result++;
-            }
-
-            return result;
-        }
-        #endregion      
+            return next;
+        }   
     }
 }
