@@ -50,13 +50,13 @@ namespace IntegerExtensions
         /// Testing method for finding FindNextBiggerNumber's value and the time it took to perform the calculations.
         /// </summary>
         /// <param name="number">Source number.</param>
-        /// <returns>Tuple element of type (result number, time in milliseconds).</returns>
-        public static Tuple<int, long> GetMethodTime(int number)
+        /// <returns>Tuple element of type (result number, elapsed time).</returns>
+        public static Tuple<int, TimeSpan> GetMethodTime(int number)
         {
             Stopwatch watch = Stopwatch.StartNew();
             int resultNumber = FindNextBiggerNumber(number);
             watch.Stop();
-            return new Tuple<int, long>(resultNumber, watch.ElapsedMilliseconds);
+            return new Tuple<int, TimeSpan>(resultNumber, watch.Elapsed);
         }
         #endregion
 

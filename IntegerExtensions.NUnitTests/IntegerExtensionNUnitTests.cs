@@ -42,7 +42,7 @@ namespace IntegerExtensions.NUnitTests
         public int GetMethodTime_Test(int number)
         {
             var tuple = IntegerExtension.GetMethodTime(number);
-            Debug.WriteLine($"Time elapsed: {tuple.Item2} milliseconds.");
+            Debug.WriteLine($"Time elapsed: {tuple.Item2}.");
             return tuple.Item1;
         }
     }
