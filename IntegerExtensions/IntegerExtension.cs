@@ -1,23 +1,37 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace IntegerExtensions
 {
-    using System.Diagnostics;
-
     /// <summary>
     /// Class of finding next bigger number method.
     /// </summary>
     public static class IntegerExtension
     {
-        #region FindNextBiggerNumber methods
+        #region GetMethodTime method      
+        /// <summary>
+        /// Testing method for finding FindNextBiggerNumber's value and the time it took to perform the calculations.
+        /// </summary>
+        /// <param name="number">Source number.</param>
+        /// <returns>Tuple element of type (result number, elapsed time in ticks).</returns>
+        public static (int, long) GetMethodTime(int number)
+        {
+            Stopwatch watch = Stopwatch.StartNew();
+            int resultNumber = FindNextBiggerNumber(number);
+            watch.Stop();
+            return (resultNumber, watch.ElapsedTicks);
+        }
+        #endregion
+
+        #region Private methods
         /// <summary>
         /// Method for finding next bigger number, which consists of the same digits.
         /// </summary>
         /// <param name="number">Source number.</param>
         /// <returns>Result number if it exists or -1 if it doesn't.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when source number is out of range.</exception>
-        public static int FindNextBiggerNumber(int number)
+        private static int FindNextBiggerNumber(int number)
         {
             if (number < 0)
             {
@@ -46,21 +60,6 @@ namespace IntegerExtensions
             return number;
         }
 
-        /// <summary>
-        /// Testing method for finding FindNextBiggerNumber's value and the time it took to perform the calculations.
-        /// </summary>
-        /// <param name="number">Source number.</param>
-        /// <returns>Tuple element of type (result number, elapsed time).</returns>
-        public static Tuple<int, TimeSpan> GetMethodTime(int number)
-        {
-            Stopwatch watch = Stopwatch.StartNew();
-            int resultNumber = FindNextBiggerNumber(number);
-            watch.Stop();
-            return new Tuple<int, TimeSpan>(resultNumber, watch.Elapsed);
-        }
-        #endregion
-
-        #region Private methods
         /// <summary>
         /// Method which converts the number into the array of its digits.
         /// </summary>
