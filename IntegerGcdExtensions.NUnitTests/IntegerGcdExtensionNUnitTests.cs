@@ -12,17 +12,24 @@ namespace IntegerGcdExtensions.NUnitTests
         [TestCase(20, 100, 20, ExpectedResult = 20)]
         [TestCase(37, 600, 1, ExpectedResult = 1)]
         [TestCase(0, 624129, 2061517, 18913, ExpectedResult = 18913)]
-        [TestCase(16, 52, new int[] { 18, 48 }, ExpectedResult = 2)]
-        public int EuclidGcd_Test(int numberFirst, int numberSecond, params int[] array)
+        [TestCase(new int[] { 18, 48 }, ExpectedResult = 6)]
+        public int EuclidGcd_Test(params int[] array)
         {
-            Debug.WriteLine($"Time elapsed: {IntegerGcdExtension.GetEuclidGcdTime(numberFirst, numberSecond, array)}.");
-            return IntegerGcdExtension.EuclidGcd(numberFirst, numberSecond, array);
+            var tuple = IntegerGcdExtension.GetEuclidGcdTime(array);
+            Debug.WriteLine($"Time elapsed: {tuple.Item2} ticks.");
+            return tuple.Item1;
         }
 
         [TestCase(2, 4, -2)]
-        public void EuclidGcd_ThrowsArgumentOutOfRangeException(int numberFirst, int numberSecond, params int[] array)
-        {    
-            Assert.Throws<ArgumentOutOfRangeException>(() => IntegerGcdExtension.EuclidGcd(numberFirst, numberSecond, array));
+        public void EuclidGcd_ThrowsArgumentOutOfRangeException(params int[] array)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => IntegerGcdExtension.GetEuclidGcdTime(array));
+        }
+
+        [TestCase(2)]
+        public void EuclidGcd_ThrowsArgumentException(params int[] array)
+        {
+            Assert.Throws<ArgumentException>(() => IntegerGcdExtension.GetEuclidGcdTime(array));
         }
 
         [TestCase(2, 4, ExpectedResult = 2)]
@@ -30,17 +37,24 @@ namespace IntegerGcdExtensions.NUnitTests
         [TestCase(20, 100, 20, ExpectedResult = 20)]
         [TestCase(37, 600, 1, ExpectedResult = 1)]
         [TestCase(0, 624129, 2061517, 18913, ExpectedResult = 18913)]
-        [TestCase(16, 52, new int[] { 18, 48 }, ExpectedResult = 2)]
-        public int SteinGcd_Test(int numberFirst, int numberSecond, params int[] array)
+        [TestCase(new int[] { 18, 48 }, ExpectedResult = 6)]
+        public int SteinGcd_Test(params int[] array)
         {
-            Debug.WriteLine($"Time elapsed: {IntegerGcdExtension.GetSteinGcdTime(numberFirst, numberSecond, array)}.");
-            return IntegerGcdExtension.SteinGcd(numberFirst, numberSecond, array);
+            var tuple = IntegerGcdExtension.GetSteinGcdTime(array);
+            Debug.WriteLine($"Time elapsed: {tuple.Item2} ticks.");
+            return tuple.Item1;
         }
 
         [TestCase(2, -4)]
-        public void SteinGcd_ThrowsArgumentOutOfRangeException(int numberFirst, int numberSecond, params int[] array)
-        {        
-            Assert.Throws<ArgumentOutOfRangeException>(() => IntegerGcdExtension.SteinGcd(numberFirst, numberSecond, array));
+        public void SteinGcd_ThrowsArgumentOutOfRangeException(params int[] array)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => IntegerGcdExtension.GetSteinGcdTime(array));
+        }
+
+        [TestCase(2)]
+        public void SteinGcd_ThrowsArgumentException(params int[] array)
+        {
+            Assert.Throws<ArgumentException>(() => IntegerGcdExtension.GetSteinGcdTime(array));
         }
     }
 }
