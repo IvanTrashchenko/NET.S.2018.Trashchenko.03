@@ -15,7 +15,7 @@ namespace IntegerExtensions
         /// </summary>
         /// <param name="number">Source number.</param>
         /// <returns>Tuple element of type (result number, elapsed time in ticks).</returns>
-        public static (int, long) GetMethodTime(int number)
+        public static (int, long) GetNextBiggerNumberTime(int number)
         {
             Stopwatch watch = Stopwatch.StartNew();
             int resultNumber = FindNextBiggerNumber(number);
