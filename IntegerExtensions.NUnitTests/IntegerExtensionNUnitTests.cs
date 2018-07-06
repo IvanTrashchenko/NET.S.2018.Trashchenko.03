@@ -20,13 +20,13 @@ namespace IntegerExtensions.NUnitTests
         [TestCase(20, ExpectedResult = -1)]
         public int FindNextBiggerNumber_Test(int number)
         {
-            return IntegerExtension.GetMethodTime(number).Item1;
+            return IntegerExtension.GetNextBiggerNumberTime(number).Item1;
         }
 
         [TestCase(-45)]
         public void FindNextBiggerNumber_ThrowsArgumentOutOfRangeException(int number)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => IntegerExtension.GetMethodTime(number));
+            Assert.Throws<ArgumentOutOfRangeException>(() => IntegerExtension.GetNextBiggerNumberTime(number));
         }
 
         [TestCase(12, ExpectedResult = 21)]
@@ -41,7 +41,7 @@ namespace IntegerExtensions.NUnitTests
         [TestCase(20, ExpectedResult = -1)]
         public int GetMethodTime_Test(int number)
         {
-            var tuple = IntegerExtension.GetMethodTime(number);
+            var tuple = IntegerExtension.GetNextBiggerNumberTime(number);
             Debug.WriteLine($"Time elapsed: {tuple.Item2} ticks.");
             return tuple.Item1;
         }
