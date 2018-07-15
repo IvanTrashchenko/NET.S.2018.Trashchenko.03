@@ -59,13 +59,27 @@ namespace IntegerGcdExtensions
         }
 
         /// <summary>
-        /// Method which computes GCD of optional amount of numbers using Euclid's algorithm.
+        /// Method which computes GCD of three numbers using Euclid's algorithm.
         /// </summary>
-        /// <param name="array">Numbers array.</param>
+        /// <param name="numberFirst">First number.</param>
+        /// <param name="numberSecond">Second number.</param>
+        /// <param name="numberThird">Third number.</param>
         /// <returns>GCD of source numbers.</returns>
-        /// <exception cref="ArgumentException">Thrown when initial parameters are incorrect. </exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
-        public static int EuclidGcd(params int[] array)
+        public static int EuclidGcd(int numberFirst, int numberSecond, int numberThird)
+        {
+            int gcd = EuclidGcd(numberFirst, numberSecond);
+            return EuclidGcd(gcd, numberThird);
+        }
+
+        /// <summary>
+            /// Method which computes GCD of optional amount of numbers using Euclid's algorithm.
+            /// </summary>
+            /// <param name="array">Numbers array.</param>
+            /// <returns>GCD of source numbers.</returns>
+            /// <exception cref="ArgumentException">Thrown when initial parameters are incorrect. </exception>
+            /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
+            public static int EuclidGcd(params int[] array)
         {
             if (array.Length == 0 || array.Length == 1)
             {
@@ -155,6 +169,20 @@ namespace IntegerGcdExtensions
             }
 
             return SteinGcd((numberSecond - numberFirst) >> 1, numberFirst);
+        }
+
+        /// <summary>
+        /// Method which computes GCD of three numbers using Stein's algorithm.
+        /// </summary>
+        /// <param name="numberFirst">First number.</param>
+        /// <param name="numberSecond">Second number.</param>
+        /// <param name="numberThird">Third number.</param>
+        /// <returns>GCD of source numbers.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
+        public static int SteinGcd(int numberFirst, int numberSecond, int numberThird)
+        {
+            int gcd = SteinGcd(numberFirst, numberSecond);
+            return SteinGcd(gcd, numberThird);
         }
 
         /// <summary>
