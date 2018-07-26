@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace IntegerGcdExtensions
@@ -9,6 +8,8 @@ namespace IntegerGcdExtensions
     /// </summary>
     public static class IntegerGcdExtension
     {
+        #region EuclidGCD methods
+
         /// <summary>
         /// Method which computes GCD of two numbers using Euclid's algorithm.
         /// </summary>
@@ -66,53 +67,34 @@ namespace IntegerGcdExtensions
         /// <param name="numberThird">Third number.</param>
         /// <returns>GCD of source numbers.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
-        public static int EuclidGcd(int numberFirst, int numberSecond, int numberThird)
-        {
-            int gcd = EuclidGcd(numberFirst, numberSecond);
-            return EuclidGcd(gcd, numberThird);
-        }
+        public static int EuclidGcd(int numberFirst, int numberSecond, int numberThird) =>
+            ThreeNumsGcd(EuclidGcd, numberFirst, numberSecond, numberThird);
 
         /// <summary>
-            /// Method which computes GCD of optional amount of numbers using Euclid's algorithm.
-            /// </summary>
-            /// <param name="array">Numbers array.</param>
-            /// <returns>GCD of source numbers.</returns>
-            /// <exception cref="ArgumentException">Thrown when initial parameters are incorrect. </exception>
-            /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
-            public static int EuclidGcd(params int[] array)
-        {
-            if (array.Length == 0 || array.Length == 1)
-            {
-                throw new ArgumentException("Number of method parameters can not be less than two.");
-            }
-
-            int gcd = EuclidGcd(array[0], array[1]);
-
-            if (array.Length == 2) 
-            {
-                return gcd; // unnecessary?
-            }
-
-            for (int i = 2; i < array.Length; i++)
-            {
-                gcd = EuclidGcd(gcd, array[i]);
-            }
-
-            return gcd;           
-        }
+        /// Method which computes GCD of optional amount of numbers using Euclid's algorithm.
+        /// </summary>
+        /// <param name="numbers">Numbers array.</param>
+        /// <returns>GCD of source numbers.</returns>
+        /// <exception cref="ArgumentException">Thrown when initial parameters are incorrect. </exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
+        public static int EuclidGcd(params int[] numbers) => ParamsGcd(EuclidGcd, numbers);
 
         /// <summary>
         /// Method which finds the time Euclid's method takes to compute GCD of specicfic numbers.
         /// </summary>
-        /// <param name="array">Numbers array.</param>
+        /// <param name="numbers">Numbers array.</param>
         /// <returns>Tuple element of type (result GCD, elapsed time in ticks).</returns>
-        public static (int, long) GetEuclidGcdTime(params int[] array)
+        public static (int, long) GetEuclidGcdTime(params int[] numbers)
         {
             Stopwatch watch = Stopwatch.StartNew();
-            int result = EuclidGcd(array);
+            int result = EuclidGcd(numbers);
             watch.Stop();
             return (result, watch.ElapsedTicks);
         }
+
+        #endregion
+
+        #region SteinGCD methods
 
         /// <summary>
         /// Method which computes GCD of two numbers using Stein's algorithm.
@@ -179,52 +161,78 @@ namespace IntegerGcdExtensions
         /// <param name="numberThird">Third number.</param>
         /// <returns>GCD of source numbers.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
-        public static int SteinGcd(int numberFirst, int numberSecond, int numberThird)
-        {
-            int gcd = SteinGcd(numberFirst, numberSecond);
-            return SteinGcd(gcd, numberThird);
-        }
+        public static int SteinGcd(int numberFirst, int numberSecond, int numberThird) => 
+            ThreeNumsGcd(SteinGcd, numberFirst, numberSecond, numberThird);
 
         /// <summary>
         /// Method which computes GCD of optional amount of numbers using Stein's algorithm.
         /// </summary>
-        /// <param name="array">Numbers array.</param>
+        /// <param name="numbers">Numbers array.</param>
         /// <returns>GCD of source numbers.</returns>
         /// <exception cref="ArgumentException">Thrown when initial parameters are incorrect. </exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when source numbers are out of range.</exception>
-        public static int SteinGcd(params int[] array)
+        public static int SteinGcd(params int[] numbers) => ParamsGcd(SteinGcd, numbers);
+
+        /// <summary>
+        /// Method which finds the time Stein's method takes to compute GCD of specicfic numbers.
+        /// </summary>
+        /// <param name="numbers">Numbers array.</param>
+        /// <returns>Tuple element of type (result GCD, elapsed time in ticks).</returns>
+        public static (int, long) GetSteinGcdTime(params int[] numbers)
         {
-            if (array.Length == 0 || array.Length == 1)
+            Stopwatch watch = Stopwatch.StartNew();
+            int result = SteinGcd(numbers);
+            watch.Stop();
+            return (result, watch.ElapsedTicks);
+        }
+
+        #endregion
+
+        #region Delegate methods
+
+        private static int ParamsGcd(Func<int, int, int> gcdMethod, params int[] numbers)
+        {
+            if (gcdMethod == null)
+            {
+                throw new ArgumentNullException($"{nameof(gcdMethod)} can not be null.");
+            }
+
+            if (numbers == null)
+            {
+                throw new ArgumentNullException($"{nameof(numbers)} can not be null.");
+            }
+
+            if (numbers.Length == 0 || numbers.Length == 1)
             {
                 throw new ArgumentException("Number of method parameters can not be less than two.");
             }
 
-            int gcd = SteinGcd(array[0], array[1]);
+            int gcd = gcdMethod(numbers[0], numbers[1]);
 
-            if (array.Length == 2)
+            if (numbers.Length == 2)
             {
-                return gcd; // unnecessary?
+                return gcd;
             }
 
-            for (int i = 2; i < array.Length; i++)
+            for (int i = 2; i < numbers.Length; i++)
             {
-                gcd = SteinGcd(gcd, array[i]);
+                gcd = gcdMethod(gcd, numbers[i]);
             }
 
             return gcd;
         }
 
-        /// <summary>
-        /// Method which finds the time Stein's method takes to compute GCD of specicfic numbers.
-        /// </summary>
-        /// <param name="array">Numbers array.</param>
-        /// <returns>Tuple element of type (result GCD, elapsed time in ticks).</returns>
-        public static (int, long) GetSteinGcdTime(params int[] array)
+        private static int ThreeNumsGcd(Func<int, int, int> gcdMethod, int numberFirst, int numberSecond, int numberThird)
         {
-            Stopwatch watch = Stopwatch.StartNew();
-            int result = SteinGcd(array);
-            watch.Stop();
-            return (result, watch.ElapsedTicks);
+            if (gcdMethod == null)
+            {
+                throw new ArgumentNullException($"{nameof(gcdMethod)} can not be null.");
+            }
+
+            int gcd = gcdMethod(numberFirst, numberSecond);
+            return gcdMethod(gcd, numberThird);
         }
+
+        #endregion
     }
 }
